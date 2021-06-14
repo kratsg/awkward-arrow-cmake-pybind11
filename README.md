@@ -6,6 +6,7 @@
 docker build -t test .
 docker run -it --rm -v $PWD:$PWD -w $PWD test
 cmake -S src -B build
+cmake --build build
 ```
 
 Dunno.

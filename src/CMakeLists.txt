@@ -2,6 +2,8 @@
 
 cmake_minimum_required(VERSION 3.1...3.16)
 project(example LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 execute_process(
   COMMAND python3 -m awkward.config --incdir
@@ -17,18 +19,10 @@ message(STATUS "Awkward libraries: ${AWKWARD_LIBRARIES}")
 include_directories(BEFORE "${AWKWARD_INCLUDE}")
 
 add_subdirectory(pybind11 cmake_pybind11)
+find_package(Arrow REQUIRED)
 
-include(FetchContent REQUIRED)
-FetchContent_Declare(
-        arrow
-        GIT_REPOSITORY https://github.com/apache/arrow.git
-        GIT_TAG        apache-arrow-4.0.1
-)
-FetchContent_GetProperties(arrow)
-FetchContent_MakeAvailable(arrow)
-
-message(STATUS "Arrow version: ${arrow_VERSION}")
-message(STATUS "Arrow SO version: ${arrow_FULL_SO_VERSION}")
+message(STATUS "Arrow version: ${ARROW_VERSION}")
+message(STATUS "Arrow SO version: ${ARROW_FULL_SO_VERSION}")
 
 find_library(CPU-KERNELS awkward-cpu-kernels REQUIRED HINTS ${AWKWARD_LIBRARIES})
 find_library(LIBAWKWARD awkward REQUIRED HINTS ${AWKWARD_LIBRARIES})
