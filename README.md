@@ -23,3 +23,8 @@ bash build.sh
 ```
 bash run_example.sh
 ```
+
+## Notes
+
+- How to build with awkward: https://github.com/scikit-hep/awkward-1.0/tree/main/dependent-project
+- How to build with Arrow
