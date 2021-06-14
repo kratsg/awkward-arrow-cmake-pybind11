@@ -51,4 +51,4 @@ target_link_libraries(example_arrow PRIVATE arrow_shared)
 # awkward+pybind11+arrow
 pybind11_add_module(babel babel/python.cpp)
 set_target_properties(babel PROPERTIES CXX_VISIBILITY_PRESET hidden)
-target_link_libraries(babel PRIVATE ${CPU-KERNELS} ${LIBAWKWARD} ${LIBDL})
+target_link_libraries(babel PRIVATE ${PYARROW_LIBRARIES})
