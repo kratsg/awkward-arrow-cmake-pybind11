@@ -10,16 +10,23 @@ add_subdirectory(pybind11 cmake_pybind11)
 
 # set up Arrow
 find_package(Arrow REQUIRED)
+execute_process(
+  COMMAND python -c "import pyarrow as pa; print(pa.get_include())"
+  OUTPUT_VARIABLE PYARROW_INCLUDE
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 message(STATUS "Arrow version: ${ARROW_VERSION}")
 message(STATUS "Arrow SO version: ${ARROW_FULL_SO_VERSION}")
+message(STATUS "PyArrow includes : ${PYARROW_INCLUDE}")
+include_directories(BEFORE "${PYARROW_INCLUDE}")
 
 # set up awkward
 execute_process(
-  COMMAND python3 -m awkward.config --incdir
+  COMMAND python -m awkward.config --incdir
   OUTPUT_VARIABLE AWKWARD_INCLUDE
   OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(
-  COMMAND python3 -m awkward.config --libdir
+  COMMAND python -m awkward.config --libdir
   OUTPUT_VARIABLE AWKWARD_LIBRARIES
   OUTPUT_STRIP_TRAILING_WHITESPACE)
 
@@ -40,3 +47,8 @@ target_link_libraries(example PRIVATE ${CPU-KERNELS} ${LIBAWKWARD} ${LIBDL})
 # minimal arrow
 add_executable(example_arrow example/arrow.cpp)
 target_link_libraries(example_arrow PRIVATE arrow_shared)
+
+# awkward+pybind11+arrow
+pybind11_add_module(babel babel/python.cpp)
+set_target_properties(babel PROPERTIES CXX_VISIBILITY_PRESET hidden)
+target_link_libraries(babel PRIVATE ${CPU-KERNELS} ${LIBAWKWARD} ${LIBDL})
