@@ -49,6 +49,7 @@ add_executable(example_arrow example/arrow.cpp)
 target_link_libraries(example_arrow PRIVATE arrow_shared)
 
 # awkward+pybind11+arrow
+# babel is a user defined project
 pybind11_add_module(babel babel/python.cpp)
 set_target_properties(babel PROPERTIES CXX_VISIBILITY_PRESET hidden)
 target_link_libraries(babel PRIVATE ${PYARROW_LIBRARIES})
