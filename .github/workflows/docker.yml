@@ -65,6 +65,6 @@ jobs:
 
       - name: Run tests
         run: >-
-          docker run --rm
+          docker run --rm -it -v $PWD:$PWD -w $PWD
           amglab/awkward-arrow-cmake-pybind11:sha-${GITHUB_SHA::8}
-          'echo "Hello World"'
+          'bash build.sh; bash run_example.sh'
