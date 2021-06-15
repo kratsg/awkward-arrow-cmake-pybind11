@@ -54,7 +54,7 @@ target_link_libraries(arrow INTERFACE ${LIBARROW})
 target_include_directories(arrow INTERFACE "${PYARROW_INCLUDE}")
 
 add_library(pyarrow IMPORTED INTERFACE)
-target_link_libraries(pyarrow INTERFACE arrow ${LIBARROW_PYTHON}) #  ${PYTHON_LIBRARIES})
+target_link_libraries(pyarrow INTERFACE arrow ${LIBARROW_PYTHON})
 target_include_directories(pyarrow INTERFACE "${PYARROW_INCLUDE}")
 
 add_library(awkward IMPORTED INTERFACE)
