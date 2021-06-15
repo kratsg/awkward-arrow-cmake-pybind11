@@ -14,4 +14,4 @@ cmake \
   -S src \
   -B build
 cmake build -L
-cmake --build build -- -j$(($(nproc) - 1))
+cmake --build build -v -j$(($(nproc) - 1))
