@@ -2,7 +2,10 @@
 name: 'Hello World'
 description: 'Build and test'
 inputs:
-outputs:
+  dockerfile:
+    description: 'path to dockerfile to use'
+    required: false
+    default: 'Dockerfile'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: ${{ inputs.dockerfile }}
