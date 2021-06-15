@@ -15,11 +15,11 @@ to get the `pybind11` submodule.
 ```
 make build-image-debug
 make debug
-bash build.sh
+./build.sh
 ```
 
 ## Run examples after building
 
 ```
-bash run_example.sh
+./run_example.sh
 ```
