@@ -10,6 +10,9 @@ add_subdirectory(pybind11 cmake_pybind11)
 
 # set up Arrow
 execute_process(
+  COMMAND python -c "import pyarrow as pa; pa.create_library_symlinks()"
+)
+execute_process(
   COMMAND python -c "import pyarrow as pa; print(pa.get_include())"
   OUTPUT_VARIABLE PYARROW_INCLUDE
   OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -42,15 +45,17 @@ message(STATUS "Awkward libraries: ${AWKWARD_LIBRARIES}")
 find_library(CPU-KERNELS awkward-cpu-kernels REQUIRED HINTS ${AWKWARD_LIBRARIES})
 find_library(LIBAWKWARD awkward REQUIRED HINTS ${AWKWARD_LIBRARIES})
 find_library(LIBDL dl REQUIRED)
-find_library(LIBARROW libarrow.so.400 REQUIRED HINTS ${PYARROW_LIBRARY_DIRS} NO_DEFAULT_PATH)
-find_library(LIBARROW_PYTHON libarrow_python.so.400 REQUIRED HINTS ${PYARROW_LIBRARY_DIRS})
+find_library(LIBARROW arrow REQUIRED HINTS ${PYARROW_LIBRARY_DIRS} NO_DEFAULT_PATH)
+find_library(LIBARROW_PYTHON arrow_python REQUIRED HINTS ${PYARROW_LIBRARY_DIRS})
 message(STATUS "Libraries: ${CPU-KERNELS} ${LIBAWKWARD} ${LIBDL} ${LIBARROW} ${LIBARROW_PYTHON}")
 
+add_library(arrow IMPORTED INTERFACE)
+target_link_libraries(arrow INTERFACE ${LIBARROW})
+target_include_directories(arrow INTERFACE "${PYARROW_INCLUDE}")
 
 add_library(pyarrow IMPORTED INTERFACE)
-target_link_libraries(pyarrow INTERFACE ${LIBARROW} ${LIBARROW_PYTHON}) #  ${PYTHON_LIBRARIES})
+target_link_libraries(pyarrow INTERFACE arrow ${LIBARROW_PYTHON}) #  ${PYTHON_LIBRARIES})
 target_include_directories(pyarrow INTERFACE "${PYARROW_INCLUDE}")
-target_link_options(pyarrow INTERFACE "-Wl,--unresolved-symbols=ignore-all")
 
 add_library(awkward IMPORTED INTERFACE)
 target_link_libraries(awkward INTERFACE ${CPU-KERNELS} ${LIBAWKWARD} ${LIBDL})
@@ -63,7 +68,7 @@ target_link_libraries(example PRIVATE awkward)
 
 # minimal arrow
 add_executable(example_arrow example/arrow.cpp)
-target_link_libraries(example_arrow PRIVATE pyarrow)
+target_link_libraries(example_arrow PRIVATE arrow)
 
 # awkward+pybind11+arrow
 pybind11_add_module(babel babel/python.cpp)
