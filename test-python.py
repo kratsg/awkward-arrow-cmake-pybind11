@@ -17,7 +17,7 @@ import numpy as np
 
 import build.babel
 
-def test_sum():
-    x = pa.array([1,2,3.1])
-    assert build.babel.sum(x) == np.sum(np.array(x))
-    assert build.babel.sum(x[1:]) == np.sum(np.array(x[1:]))
+# def test_sum():
+#     x = pa.array([1,2,3.1])
+#     assert build.babel.sum(x) == np.sum(np.array(x))
+#     assert build.babel.sum(x[1:]) == np.sum(np.array(x[1:]))
