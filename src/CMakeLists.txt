@@ -9,7 +9,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(pybind11 cmake_pybind11)
 
 # set up Arrow
-find_package(Arrow REQUIRED)
 execute_process(
   COMMAND python -c "import pyarrow as pa; print(pa.get_include())"
   OUTPUT_VARIABLE PYARROW_INCLUDE
@@ -23,8 +22,6 @@ execute_process(
   OUTPUT_VARIABLE PYARROW_LIBRARY_DIRS
   OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-message(STATUS "Arrow version: ${ARROW_VERSION}")
-message(STATUS "Arrow SO version: ${ARROW_FULL_SO_VERSION}")
 message(STATUS "PyArrow includes : ${PYARROW_INCLUDE}")
 message(STATUS "PyArrow libraries : ${PYARROW_LIBRARIES}")
 message(STATUS "PyArrow library dirs : ${PYARROW_LIBRARY_DIRS}")
