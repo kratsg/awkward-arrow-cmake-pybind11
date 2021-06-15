@@ -1,11 +1,6 @@
 # action.yml
 name: 'Hello World'
 description: 'Build and test'
-inputs:
-  dockerfile:
-    description: 'path to dockerfile to use'
-    required: false
-    default: 'Dockerfile'
 runs:
   using: 'docker'
-  image: ${{ inputs.dockerfile }}
+  image: './Dockerfile'
