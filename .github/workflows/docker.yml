@@ -69,4 +69,4 @@ jobs:
         run: >-
           docker run --rm -v $PWD:$PWD -w $PWD
           amglab/awkward-arrow-cmake-pybind11:sha-${GITHUB_SHA::8}
-          'bash build.sh; bash run_example.sh'
+          'bash build.sh && bash run_example.sh'
