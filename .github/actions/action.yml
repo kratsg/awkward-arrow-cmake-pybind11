@@ -4,10 +4,3 @@ description: 'Build and test'
 runs:
   using: 'docker'
   image: '../../Dockerfile'
-  steps:
-    - run: build.sh
-      shell: bash
-      name: "Compile"
-    - run: run_example.sh
-      shell: bash
-      name: "Run Example"

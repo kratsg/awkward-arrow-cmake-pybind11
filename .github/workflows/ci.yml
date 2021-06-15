@@ -15,3 +15,6 @@ jobs:
         fetch-depth: 0
     - uses: ./.github/actions
       id: hello
+      run: |
+        bash build.sh
+        bash run_example.sh
