@@ -35,11 +35,11 @@ jobs:
         with:
           push: false
           tags: |
-            kratsg/awkward-arrow-cmake-pybind11:latest
+            myimage:latest
       -
         uses: addnab/docker-run-action@v3
         with:
-          image: 'kratsg/awkward-arrow-cmake-pybind11:latest'
+          image: myimage:latest
           run: echo "hello world"
       -
         name: Image digest
@@ -51,4 +51,4 @@ jobs:
         with:
           push: false
           tags: |
-            kratsg/awkward-arrow-cmake-pybind11:latest
+            myimage:latest
