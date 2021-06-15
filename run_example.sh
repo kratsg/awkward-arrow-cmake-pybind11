@@ -2,7 +2,7 @@
 
 # bash "scrict mode"
 set -e
-set -u
+#set -u
 set -o pipefail
 
 # Assuming running from top level
