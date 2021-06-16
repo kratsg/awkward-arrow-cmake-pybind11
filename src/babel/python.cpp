@@ -2,6 +2,8 @@
 #include <pybind11/stl.h>
 #include <Python.h>
 
+#include <iostream>
+
 #include <arrow/python/pyarrow.h>
 #include <arrow/array/builder_primitive.h>
 
@@ -9,11 +11,16 @@ namespace py = pybind11;
 using DoubleArray = arrow::DoubleArray;
 using Array = arrow::Array;
 
-double sum(PyObject* source) {
-    if(!arrow::py::is_array(source))
-        return false;
 
-    arrow::Result<std::shared_ptr<arrow::Array>> result = arrow::py::unwrap_array(source);
+double sum(py::handle& source) {
+    PyObject* src = source.ptr();
+
+    if(!arrow::py::is_array(src)){
+        std::cout << "not an array" << std::endl;
+        return false;
+    }
+
+    arrow::Result<std::shared_ptr<arrow::Array>> result = arrow::py::unwrap_array(src);
     if(!result.ok())
         return false;
 
@@ -25,23 +32,6 @@ double sum(PyObject* source) {
     }
     return sum;
 }
-/*
-double sum(std::shared_ptr<arrow::DoubleArray> a) {
-    double sum = 0;
-    for(int i = 0; i < a->length(); i++) {
-        sum += a->Value(i);
-    }
-    return sum;
-}
-*/
-
-// for arrow, try something like
-/*
-
-   std::shared_ptr<arrow::Buffer> arbitrary_buffer = ... ;
-std::shared_ptr<arrow::Buffer> cpu_buffer = arrow::Buffer::ViewOrCopy(
-   arbitrary_buffer, arrow::default_cpu_memory_manager());
-*/
 
 PYBIND11_MODULE(babel, m) {
   // Ensure dependencies are loaded.
