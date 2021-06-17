@@ -24,7 +24,6 @@ def test_sum():
     assert build.babel.sum(x) == np.sum(np.array(data))
     assert build.babel.sum(x[1:]) == np.sum(np.array(x[1:]))
 
-
 def test_awkward_roundtrip():
     in_arr = ak.Array([1.,2.,3.])
     in_arrow = ak.to_arrow(in_arr)
