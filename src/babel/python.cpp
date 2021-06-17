@@ -6,6 +6,7 @@
 
 #include <arrow/python/pyarrow.h>
 #include <arrow/array/builder_primitive.h>
+#include <arrow/array.h>
 #include <arrow/compute/function.h>
 
 namespace py = pybind11;
@@ -71,7 +72,28 @@ py::handle times_two(py::handle& source) {
     return arrow::py::wrap_array(array);
 }
 
+std::shared_ptr<arrow::Array> build(const std::vector<double>& values, const std::vector<bool>& validity){
+    arrow::DoubleBuilder builder;
+    builder.Resize(3);
+    builder.AppendValues(values, validity);
+    std::shared_ptr<arrow::Array> array;
+    arrow::Status st = builder.Finish(&array);
+    if(!st.ok()){
+        std::cout << "not ok" << std::endl;
+    }
+    return array;
+}
 
+py::handle handle_struct() {
+    auto pt = build({3.1, 4.2 ,5.3},{true, true, true});
+    auto eta = build({0.1, 0.2 ,0.3},{true, true, true});
+
+    std::vector<std::string> fields = {"pt","eta"};
+    auto x = arrow::StructArray::Make(
+        {pt,eta}, fields
+    ).ValueOrDie();
+    return arrow::py::wrap_array(x);
+}
 
 PYBIND11_MODULE(babel, m) {
   // Ensure dependencies are loaded.
@@ -79,4 +101,5 @@ PYBIND11_MODULE(babel, m) {
 
   m.def("sum", &sum, py::call_guard<py::gil_scoped_release>());
   m.def("times_two", &times_two);
+  m.def("handle_struct", &handle_struct);
 }

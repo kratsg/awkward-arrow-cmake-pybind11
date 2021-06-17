@@ -32,6 +32,12 @@ def test_awkward_roundtrip():
     out_arr = ak.from_arrow(out_arrow)
     assert ak.to_numpy(out_arr).tolist() ==  [3.1, 4.2, 5.3]  
 
+def test_struct():
+    s = build.babel.handle_struct()
+    a = ak.from_arrow(s)
+    assert str(ak.type(a)) == '3 * {"pt": ?float64, "eta": ?float64}'
+
 if __name__ == '__main__':
     test_sum()
     test_awkward_roundtrip()
+    test_struct()
