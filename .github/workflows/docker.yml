@@ -65,8 +65,14 @@ jobs:
       - name: List built images
         run: docker images
 
-      - name: Run tests
+      - name: Run example
         run: >-
           docker run --rm -v $PWD:$PWD -w $PWD
           amglab/awkward-arrow-cmake-pybind11:sha-${GITHUB_SHA::8}
           'bash build.sh && bash run_example.sh'
+
+      - name: Run tests
+        run: >-
+          docker run --rm -v $PWD:$PWD -w $PWD
+          amglab/awkward-arrow-cmake-pybind11:sha-${GITHUB_SHA::8}
+          'bash build.sh && python -m pip install pytest && pytest test-python.py'
